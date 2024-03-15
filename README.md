@@ -21,4 +21,4 @@ Joutube is a video platform that allow it's users to mix 2 youtube videos togeth
 - Advanced video search
 - Advanced recommendation algorithm
 - Enjoyable UI
-- Video & commenting & chat moderation tools
+- Moderation tools
