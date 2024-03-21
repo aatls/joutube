@@ -20,3 +20,6 @@ body {
     display: inline-block;
 }
 
+p.search-container {
+    text-decoration: none;
+}
