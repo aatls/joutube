@@ -19,3 +19,7 @@ body {
 .search-container {
     display: inline-block;
 }
+
+p.search-container {
+    text-decoration: none;
+}
