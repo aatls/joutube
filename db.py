@@ -10,7 +10,7 @@ def video_exists(id):
     result = db.session.execute(sql, {"id":id})
     return result.fetchone()[0]
 
-def select_thumbnail_new(n):
+def select_thumbnails_new(n):
     sql = text("SELECT id, videoaddress, title FROM videos ORDER BY submissiontime LIMIT :n")
     result = db.session.execute(sql, {"n":n})
     return result.fetchall()
