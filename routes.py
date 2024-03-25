@@ -9,4 +9,6 @@ def index():
 
 @app.route("/video/<int:video_id>")
 def video(video_id):
-    return str(db.video_exists(video_id))
+    if not db.video_exists(video_id): return "This video does not exist :/"
+    video = db.select_video(video_id)
+    return render_template("video.html", video=video)

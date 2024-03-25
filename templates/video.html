@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="./static/styles.css">
+    <title>{{ video.title }}</title>
+</head>
+<body>
+    <div class="navigation">
+        <a href="./templates/index.html" class="logo">
+            <h1>Joutube</h1>
+        </a>
+        <div class="search-container">
+            <form action="/results" method="POST">
+                <input type="text" placeholder="Search...">
+                <button type="submit">Submit</i></button>
+            </form>
+        </div>
+    </div>
+    <div class="video-container">
+        <iframe width="560" height="315"
+        src="https://www.youtube.com/embed/{{ video.videoaddress }}?autoplay=1&mute=1"
+        title="{{ video.title }}"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <iframe width="0" height="0"
+        src="https://www.youtube.com/embed/{{ video.audioaddress }}?autoplay=1&mute=0&loop=1"
+        title="{{ video.title }}"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+    <div class="comments-container">
+            
+    </div>
+</body>

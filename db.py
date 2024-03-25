@@ -18,7 +18,7 @@ def select_thumbnails_new(n):
 def select_video(id):
     sql = text("SELECT * FROM videos WHERE id=:id")
     result = db.session.execute(sql, {"id":id})
-    return result.fetchall()
+    return result.fetchone()
 
 def select_comments_new(video_id, n):
     sql = text("SELECT text FROM comments WHERE videoid=:videoid ORDER BY submissiontime LIMIT :n")
