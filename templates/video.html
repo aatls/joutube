@@ -28,8 +28,21 @@
         frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <h1>{{ video.title }}</h1>
+        <p>{{ video.description }}</p>
     </div>
     <div class="comments-container">
-            
+        <div class="submit-comment">
+            <form>
+                <input type="text" placeholder="Comment">
+                <button type="submit">Submit</i></button>
+            </form>
+        </div>
+        {% for comment in comments %}
+        <div class="comment">
+            <p>{{ comment.content }}</p>
+            <p><small>submitted at {{ comment.submissiontime }}</small></p>
+        </div>
+        {% endfor %}
     </div>
 </body>

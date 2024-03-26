@@ -21,7 +21,7 @@ def select_video(id):
     return result.fetchone()
 
 def select_comments_new(video_id, n):
-    sql = text("SELECT text FROM comments WHERE videoid=:videoid ORDER BY submissiontime LIMIT :n")
+    sql = text("SELECT * FROM comments WHERE videoid=:videoid ORDER BY submissiontime LIMIT :n")
     result = db.session.execute(sql, {"videoid":video_id, "n":n})
     return result.fetchall()
 
