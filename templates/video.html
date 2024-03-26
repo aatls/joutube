@@ -1,11 +1,13 @@
 <!DOCTYPE html>
+<html>
 <head>
-    <link rel="stylesheet" href="./static/styles.css">
+    <link rel="stylesheet" href="/static/styles.css">
     <title>{{ video.title }}</title>
 </head>
+
 <body>
     <div class="navigation">
-        <a href="./templates/index.html" class="logo">
+        <a href="/" class="logo">
             <h1>Joutube</h1>
         </a>
         <div class="search-container">
@@ -16,7 +18,7 @@
         </div>
     </div>
     <div class="video-container">
-        <iframe width="560" height="315"
+        <iframe width="784" height="441"
         src="https://www.youtube.com/embed/{{ video.videoaddress }}?autoplay=1&mute=1"
         title="{{ video.title }}"
         frameborder="0"
@@ -46,3 +48,4 @@
         {% endfor %}
     </div>
 </body>
+</html>
