@@ -10,6 +10,16 @@ def video_exists(id):
     result = db.session.execute(sql, {"id":id})
     return result.fetchone()[0]
 
+def check_and_select_by_source(audio, video):
+    sql = text("SELECT COUNT(*) FROM videos WHERE audioaddress=:audio AND videoaddress=:video LIMIT 1")
+    result = db.session.execute(sql, {"audio":audio, "video":video})
+    if result.fetchone()[0] == "1":
+        sql = text("SELECT id FROM videos WHERE audioaddress=:audio AND videoaddress=:video LIMIT 1")
+        result = db.session.execute(sql, {"audio":audio, "video":video})
+        return result.fetchone()[0]
+    else:
+        return "-1"
+
 def select_thumbnails_new(n):
     sql = text("SELECT id, videoaddress, title FROM videos ORDER BY submissiontime LIMIT :n")
     result = db.session.execute(sql, {"n":n})
@@ -34,9 +44,11 @@ def insert_video(audio, video, title, desc, views, time):
     sql = text("""  INSERT INTO videos
                     (audioaddress, videoaddress, title, description, viewcount, submissiontime)
                     VALUES
-                    (:audio, :video, :title, :desc, :views, :time)""")
-    db.session.execute(sql, {"audio":audio, "video":video, "title":title, "desc":desc, "views":views, "time":time})
+                    (:audio, :video, :title, :desc, :views, :time)
+                    RETURNING id""")
+    result = db.session.execute(sql, {"audio":audio, "video":video, "title":title, "desc":desc, "views":views, "time":time})
     db.session.commit()
+    return result.fetchone()[0]
 
 def insert_comment(video_id, content, time):
     sql = text("""  INSERT INTO comments (videoid, content, submisiontime)
