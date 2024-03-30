@@ -1,11 +1,17 @@
 from app import app
 from flask import render_template, request, redirect
-import db, links
+import db, helpers
 
 @app.route("/")
 def index():
     thumbnails = db.select_thumbnails_new(100)
     return render_template("index.html", videos=thumbnails)
+
+@app.route("/", methods=["POST"])
+def search():
+    search_term = request.form["search"]
+    results = helpers.search_by_title(search_term)
+    return render_template("index.html", videos=results)
 
 @app.route("/video/<int:video_id>")
 def video(video_id):
@@ -28,8 +34,8 @@ def create_populated():
     desc = request.form["desc"]
     button = request.form["button"]
 
-    visual_address = links.trim_link(visual)
-    audio_address = links.trim_link(audio)
+    visual_address = helpers.trim_link(visual)
+    audio_address = helpers.trim_link(audio)
     identical = db.check_and_select_by_source(audio_address, visual_address)
 
     message = ""

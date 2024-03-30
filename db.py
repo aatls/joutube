@@ -30,6 +30,15 @@ def select_video(id):
     result = db.session.execute(sql, {"id":id})
     return result.fetchone()
 
+def select_videos_by_keywords(keywords):
+    conditions = ""
+    for word in keywords:
+        conditions += "LOWER(title) LIKE LOWER('%"+word+"%') OR "
+    conditions = conditions[:-4]
+    sql = text("SELECT * FROM videos WHERE "+conditions)
+    result = db.session.execute(sql)
+    return result.fetchall()
+
 def select_comments_new(video_id, n):
     sql = text("SELECT * FROM comments WHERE videoid=:videoid ORDER BY submissiontime LIMIT :n")
     result = db.session.execute(sql, {"videoid":video_id, "n":n})
