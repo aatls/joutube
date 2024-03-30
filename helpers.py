@@ -8,6 +8,7 @@ def trim_link(link):
         return ""
     
 def search_by_title(search_term):
+    search_term = search_term.lower()
     results = db.select_videos_by_keywords(search_term.split())
-    results.sort(reverse = True, key = lambda video: SequenceMatcher(None, search_term, video.title).ratio())
+    results.sort(reverse = True, key = lambda video: SequenceMatcher(None, search_term, video.title.lower()).ratio())
     return results

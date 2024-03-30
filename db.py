@@ -33,7 +33,7 @@ def select_video(id):
 def select_videos_by_keywords(keywords):
     conditions = ""
     for word in keywords:
-        conditions += "LOWER(title) LIKE LOWER('%"+word+"%') OR "
+        conditions += "LOWER(title) LIKE '%"+word+"%' OR "
     conditions = conditions[:-4]
     sql = text("SELECT * FROM videos WHERE "+conditions)
     result = db.session.execute(sql)
