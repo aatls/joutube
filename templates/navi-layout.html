@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/static/styles.css">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+
+<body>
+    <div class="navigation">
+        <a href="/" class="logo">
+            <h1>Joutube</h1>
+        </a>
+        <div class="search-container">
+            <form action="/" method="POST">
+                <input type="text" name="search" placeholder="Search...">
+                <button type="submit">Submit</i></button>
+            </form>
+        </div>
+        <a href="/create">Create video</a>
+    </div>
+
+    {% block content %}{% endblock %}
+    
+</body>
+</html>

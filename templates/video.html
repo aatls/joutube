@@ -1,51 +1,36 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" href="/static/styles.css">
-    <title>{{ video.title }}</title>
-</head>
+{% extends "navi-layout.html" %}
+{% block title %}{{ video.title }}{% endblock %}
+{% block content %}
 
-<body>
-    <div class="navigation">
-        <a href="/" class="logo">
-            <h1>Joutube</h1>
-        </a>
-        <div class="search-container">
-            <form action="/results" method="POST">
-                <input type="text" placeholder="Search...">
-                <button type="submit">Submit</i></button>
-            </form>
-        </div>
+<div class="video-container">
+    <iframe width="784" height="441"
+    src="https://www.youtube.com/embed/{{ video.videoaddress }}?autoplay=1&mute=1&rel=0"
+    title="{{ video.title }}"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe width="0" height="0"
+    src="https://www.youtube.com/embed/{{ video.audioaddress }}?autoplay=1&loop=1&rel=0"
+    title="{{ video.title }}"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <h1>{{ video.title }}</h1>
+    <p>{{ video.description }}</p>
+</div>
+<div class="comments-container">
+    <div class="submit-comment">
+        <form>
+            <input type="text" placeholder="Comment">
+            <button type="submit">Submit</i></button>
+        </form>
     </div>
-    <div class="video-container">
-        <iframe width="784" height="441"
-        src="https://www.youtube.com/embed/{{ video.videoaddress }}?autoplay=1&mute=1&rel=0"
-        title="{{ video.title }}"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        <iframe width="0" height="0"
-        src="https://www.youtube.com/embed/{{ video.audioaddress }}?autoplay=1&loop=1&rel=0"
-        title="{{ video.title }}"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        <h1>{{ video.title }}</h1>
-        <p>{{ video.description }}</p>
+    {% for comment in comments %}
+    <div class="comment">
+        <p>{{ comment.content }}</p>
+        <p><small>submitted at {{ comment.submissiontime }}</small></p>
     </div>
-    <div class="comments-container">
-        <div class="submit-comment">
-            <form>
-                <input type="text" placeholder="Comment">
-                <button type="submit">Submit</i></button>
-            </form>
-        </div>
-        {% for comment in comments %}
-        <div class="comment">
-            <p>{{ comment.content }}</p>
-            <p><small>submitted at {{ comment.submissiontime }}</small></p>
-        </div>
-        {% endfor %}
-    </div>
-</body>
-</html>
+    {% endfor %}
+</div>
+
+{% endblock %}

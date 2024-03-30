@@ -1,47 +1,30 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" href="/static/styles.css">
-    <title>Home</title>
-</head>
+{% extends "navi-layout.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
 
-<body>
-    <div class="navigation">
-        <a href="/" class="logo">
-            <h1>Joutube</h1>
-        </a>
-        <div class="search-container">
-            <form action="/" method="POST">
-                <input type="text" name="search" placeholder="Search...">
-                <button type="submit">Submit</i></button>
+<div class="content">
+    <div class="suggestions">
+        <div class="sort-options">
+            <p>Sort by:</p>
+            <form>
+                <select size="1">
+                    <option value="hot" selected>Hot</option>
+                    <option value="top">Top</option>
+                    <option value="new">New</option>
+                </select>
             </form>
         </div>
-        <a href="/create">Create video</a>
-    </div>
-
-    <div class="content">
-        <div class="suggestions">
-            <div class="sort-options">
-                <p>Sort by:</p>
-                <form>
-                    <select size="1">
-                        <option value="hot" selected>Hot</option>
-                        <option value="top">Top</option>
-                        <option value="new">New</option>
-                    </select>
-                </form>
+        <div class="thumbnails">
+            {% for video in videos %}
+            <div class="thumbnail-container">
+                <a href=/video/{{ video.id }}>
+                    <img src="https://img.youtube.com/vi/{{ video.videoaddress }}/1.jpg" alt="Video thumbnail">
+                    <p>{{ video.title }}</p>
+                </a>
             </div>
-            <div class="thumbnails">
-                {% for video in videos %}
-                <div class="thumbnail-container">
-                    <a href=/video/{{ video.id }}>
-                        <img src="https://img.youtube.com/vi/{{ video.videoaddress }}/1.jpg" alt="Video thumbnail">
-                        <p>{{ video.title }}</p>
-                    </a>
-                </div>
-                {% endfor %}
-            </div>
+            {% endfor %}
         </div>
     </div>
-</body>
-</html>
+</div>
+
+{% endblock %}
