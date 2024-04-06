@@ -22,3 +22,31 @@ Joutube is a video platform that allow it's users to mix 2 youtube videos togeth
 - Advanced recommendation algorithm
 - Enjoyable UI
 - Moderation tools
+
+### Instructions for testing locally (no fly.io)
+
+- Navigate to the folder where you cloned this repository
+- Create a .env file and paste the following there:
+```
+DATABASE_URL=<the-address-of-your-database>
+```
+- Activate virtual environment and install dependencies:
+```
+$ python3 -m venv venv
+$ source venv/bin/activate
+$ pip install -r ./requirements.txt
+```
+- Define the schema of your database:
+```
+$ psql < schema.sql
+```
+- Start the application:
+```
+$ flask run
+```
+
+#### Currently working features
+
+- Video creation and saving
+- Video playback (barely)
+- Video search
