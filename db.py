@@ -1,8 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import text
 from app import app
+from os import getenv
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///aatos"
+app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL")
 db = SQLAlchemy(app)
 
 def video_exists(id):
