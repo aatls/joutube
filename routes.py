@@ -2,16 +2,16 @@ from app import app
 from flask import render_template, request, redirect
 import db, helpers
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def index():
-    thumbnails = db.select_thumbnails_new(100)
-    return render_template("index.html", videos=thumbnails)
+    if request.method == "POST":
+        search_term = request.form["search"]
+        thumbnails = helpers.search_by_title(search_term)
+    else:
+        thumbnails = db.select_thumbnails_new(100)
 
-@app.route("/", methods=["POST"])
-def search():
-    search_term = request.form["search"]
-    results = helpers.search_by_title(search_term)
-    return render_template("index.html", videos=results)
+    messages = db.select_messages(100)
+    return render_template("index.html", videos=thumbnails, messages=messages)
 
 @app.route("/video/<int:video_id>")
 def video(video_id):

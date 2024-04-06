@@ -45,7 +45,7 @@ def select_comments_new(video_id, n):
     return result.fetchall()
 
 def select_messages(n):
-    sql = text("SELECT content FROM messages ORDER BY submissiontime LIMIT :n")
+    sql = text("SELECT content, submissiontime FROM messages ORDER BY submissiontime LIMIT :n")
     result = db.session.execute(sql, {"n":n})
     return result.fetchall()
 
