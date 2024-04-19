@@ -17,6 +17,11 @@
             </form>
         </div>
         <a href="/create">Create video</a>
+        {% if session.username %}
+        <p>Logged in as {{ session.username }}</p>
+        {% else %}
+        <a href="/login">Log in</a>
+        {% endif %}
     </div>
 
     {% block content %}{% endblock %}

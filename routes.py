@@ -1,5 +1,7 @@
 from app import app
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, session
+from werkzeug.security import check_password_hash, generate_password_hash
+
 import db, helpers
 
 @app.route("/", methods=["GET", "POST"])
@@ -12,6 +14,67 @@ def index():
 
     messages = db.select_messages(100)
     return render_template("index.html", videos=thumbnails, messages=messages)
+
+@app.route("/signup")
+def signup_initial():
+    return render_template("signup.html")
+
+@app.route("/signup", methods=["POST"])
+def signup():
+    username = request.form["username"]
+    password1 = request.form["password1"]
+    password2 = request.form["password2"]
+
+    message = ""
+    accept_input = True
+
+    if len(password1) < 5 or len(password2) < 5:
+        message += "Password must be at least 5 characters long\n"
+        accept_input = False
+    if password1 != password2:
+        message += "Passwords do not match\n"
+        accept_input = False
+    if len(username) < 3:
+        message += "Select username that is at least 3 characters\n"
+        accept_input = False
+    if db.username_exists(username):
+        message += "Username is already taken\n"
+        accept_input = False
+
+    if accept_input:
+        hash_value = generate_password_hash(password1)
+        db.insert_user(username, hash_value)
+        session["username"] = username
+        return redirect("/")
+    else:
+        return render_template("signup.html", username=username, message=message)
+
+@app.route("/login")
+def login_initial():
+    return render_template("login.html")
+
+@app.route("/login", methods=["POST"])
+def login():
+    username = request.form["username"]
+    password = request.form["password"]
+
+    message = ""
+    accept_input = True
+
+    if not db.username_exists(username) or not check_password_hash(db.select_password_by_username(username), password):
+        message += "Incorrect username or password"
+        accept_input = False
+
+    if accept_input:
+        session["username"] = username
+        return redirect("/")
+    else:
+        return render_template("login.html", username=username, message=message)
+
+@app.route("/logout")
+def logout():
+    del session["username"]
+    return redirect("/")
 
 @app.route("/video/<int:video_id>")
 def video(video_id):

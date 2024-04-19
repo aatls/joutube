@@ -1,3 +1,8 @@
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username TEXT,
+    password TEXT
+);
 CREATE TABLE videos (
     id SERIAL PRIMARY KEY,
     audioaddress TEXT,

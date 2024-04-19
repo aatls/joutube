@@ -6,6 +6,16 @@ from os import getenv
 app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL")
 db = SQLAlchemy(app)
 
+def username_exists(username):
+    sql = text("SELECT COUNT(id) FROM users WHERE LOWER(username)=LOWER(:username)")
+    result = db.session.execute(sql, {"username":username})
+    return result.fetchone()[0] != 0
+    
+def select_password_by_username(username):
+    sql = text("SELECT password FROM users WHERE LOWER(username)=LOWER(:username)")
+    result = db.session.execute(sql, {"username":username})
+    return result.fetchone()[0]
+
 def video_exists(id):
     sql = text("SELECT COUNT(*) FROM videos WHERE id=:id")
     result = db.session.execute(sql, {"id":id})
@@ -59,6 +69,12 @@ def insert_video(audio, video, title, desc, views, time):
     result = db.session.execute(sql, {"audio":audio, "video":video, "title":title, "desc":desc, "views":views, "time":time})
     db.session.commit()
     return result.fetchone()[0]
+
+def insert_user(username, password):
+    sql = text("""  INSERT INTO users (username, password)
+                    VALUES (:username, :password)""")
+    db.session.execute(sql, {"username":username, "password":password})
+    db.session.commit()
 
 def insert_comment(video_id, content, time):
     sql = text("""  INSERT INTO comments (videoid, content, submisiontime)
