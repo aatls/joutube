@@ -23,3 +23,7 @@ body {
 p.search-container {
     text-decoration: none;
 }
+
+iframe {
+    pointer-events: none;
+}
