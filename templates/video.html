@@ -26,6 +26,8 @@
     <input class="volume" id="volume" type="range" min="0" max="100" value="100">
     <button id="play-pause" onclick="playPausePlayers()">Play/Pause</button>
     <h1>{{ video.title }}</h1>
+    <p>{{ video.viewcount }} views</p>
+    <p>Submitted by {{ video.username }}</p>
     <p>{{ video.description }}</p>
 </div>
 <div class="comments-container">

@@ -38,7 +38,7 @@ def select_thumbnails_new(n):
     return result.fetchall()
 
 def select_video(id):
-    sql = text("SELECT * FROM videos WHERE id=:id")
+    sql = text("SELECT * FROM videos v, users u WHERE v.id=:id AND v.userid=u.id")
     result = db.session.execute(sql, {"id":id})
     return result.fetchone()
 
@@ -70,6 +70,13 @@ def insert_video(audio, video, title, desc, views, time, userid):
     result = db.session.execute(sql, {"audio":audio, "video":video, "title":title, "desc":desc, "views":views, "time":time, "userid":userid})
     db.session.commit()
     return result.fetchone()[0]
+
+def increment_viewcount(video_id):
+    sql = text("""  UPDATE videos
+                    SET viewcount=viewcount+1
+                    WHERE id=:videoid""")
+    db.session.execute(sql, {"videoid":video_id})
+    db.session.commit()
 
 def insert_user(username, password):
     sql = text("""  INSERT INTO users (username, password)
