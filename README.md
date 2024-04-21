@@ -1,6 +1,6 @@
 # Joutube
 
-Joutube is a video platform that allow it's users to mix 2 youtube videos together to create a new holistic video experience. The mixing happens by selecting one video for visuals and other for audio. The creations are saved to a database for other users amusement.
+Joutube is a video platform that allow its users to mix 2 youtube videos together to create a new holistic video experience. The mixing happens by selecting one video for visuals and other for audio. The creations are saved to a database for other users amusement.
 
 ### Implemented features
 
