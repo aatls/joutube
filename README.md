@@ -2,22 +2,23 @@
 
 Joutube is a video platform that allow it's users to mix 2 youtube videos together to create a new holistic video experience. The mixing happens by selecting one video for visuals and other for audio. The creations are saved to a database for other users amusement.
 
-### Primary features
+### Implemented features
 
-- Video creating and saving
+- User profiles
+- Video creation and saving
 - Video playback
 - View count
-- Video commenting
-- Chat
 - Primitive video search
-- Primitive suggestion algorithm
+- Primitive home page
 - Primitive UI
 
 ### Possible features
 
-- User login
 - User profile pages
-- Video likes
+- Video editing
+- Video fullscreen support
+- Video commenting
+- Chat
 - Advanced video search
 - Advanced recommendation algorithm
 - Enjoyable UI
@@ -29,6 +30,7 @@ Joutube is a video platform that allow it's users to mix 2 youtube videos togeth
 - Create a .env file and paste the following there:
 ```
 DATABASE_URL=<the-address-of-your-database>
+SECRET_KEY=<your-secret-key>
 ```
 - Activate virtual environment and install dependencies:
 ```
@@ -45,8 +47,6 @@ $ psql < schema.sql
 $ flask run
 ```
 
-#### Currently working features
+### Some notes
 
-- Video creation and saving
-- Video playback (barely)
-- Video search
+- The application is still vulnerable to attacks, this will be fixed
