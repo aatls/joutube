@@ -45,6 +45,7 @@ def signup():
         hash_value = generate_password_hash(password1)
         db.insert_user(username, hash_value)
         session["username"] = username
+        session["userid"] = db.select_userid(username)
         return redirect("/")
     else:
         return render_template("signup.html", username=username, message=message)
@@ -61,12 +62,14 @@ def login():
     message = ""
     accept_input = True
 
-    if not db.username_exists(username) or not check_password_hash(db.select_password_by_username(username), password):
+    userid = db.select_userid(username)
+    if not userid or not check_password_hash(db.select_password_by_username(username), password):
         message += "Incorrect username or password"
         accept_input = False
 
     if accept_input:
         session["username"] = username
+        session["userid"] = userid
         return redirect("/")
     else:
         return render_template("login.html", username=username, message=message)
@@ -124,7 +127,7 @@ def create_populated():
         accept_input = False
 
     if accept_input and button == "create":
-        id = str(db.insert_video(audio_address, visual_address, title, desc, 0, "NOW()"))
+        id = str(db.insert_video(audio_address, visual_address, title, desc, 0, "NOW()", session["userid"]))
         if not db.video_exists(id):
             accept_input = False
             message += "Video creation failed for some reason... OOPS xD... Try again"

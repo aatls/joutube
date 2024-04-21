@@ -6,11 +6,12 @@ from os import getenv
 app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL")
 db = SQLAlchemy(app)
 
-def username_exists(username):
-    sql = text("SELECT COUNT(id) FROM users WHERE LOWER(username)=LOWER(:username)")
+def select_userid(username):
+    sql = text("SELECT id FROM users WHERE LOWER(username)=LOWER(:username)")
     result = db.session.execute(sql, {"username":username})
-    return result.fetchone()[0] != 0
-    
+    result = result.fetchone()
+    return result[0] if result else None
+
 def select_password_by_username(username):
     sql = text("SELECT password FROM users WHERE LOWER(username)=LOWER(:username)")
     result = db.session.execute(sql, {"username":username})
@@ -32,7 +33,7 @@ def check_and_select_by_source(audio, video):
         return "-1"
 
 def select_thumbnails_new(n):
-    sql = text("SELECT id, videoaddress, title FROM videos ORDER BY submissiontime LIMIT :n")
+    sql = text("SELECT * FROM videos ORDER BY submissiontime LIMIT :n")
     result = db.session.execute(sql, {"n":n})
     return result.fetchall()
 
@@ -56,17 +57,17 @@ def select_comments_new(video_id, n):
     return result.fetchall()
 
 def select_messages(n):
-    sql = text("SELECT content, submissiontime FROM messages ORDER BY submissiontime LIMIT :n")
+    sql = text("SELECT * FROM messages ORDER BY submissiontime LIMIT :n")
     result = db.session.execute(sql, {"n":n})
     return result.fetchall()
 
-def insert_video(audio, video, title, desc, views, time):
+def insert_video(audio, video, title, desc, views, time, userid):
     sql = text("""  INSERT INTO videos
-                    (audioaddress, videoaddress, title, description, viewcount, submissiontime)
+                    (audioaddress, videoaddress, title, description, viewcount, submissiontime, userid)
                     VALUES
-                    (:audio, :video, :title, :desc, :views, :time)
+                    (:audio, :video, :title, :desc, :views, :time, :userid)
                     RETURNING id""")
-    result = db.session.execute(sql, {"audio":audio, "video":video, "title":title, "desc":desc, "views":views, "time":time})
+    result = db.session.execute(sql, {"audio":audio, "video":video, "title":title, "desc":desc, "views":views, "time":time, "userid":userid})
     db.session.commit()
     return result.fetchone()[0]
 
@@ -76,15 +77,15 @@ def insert_user(username, password):
     db.session.execute(sql, {"username":username, "password":password})
     db.session.commit()
 
-def insert_comment(video_id, content, time):
-    sql = text("""  INSERT INTO comments (videoid, content, submisiontime)
+def insert_comment(video_id, userid, content, time):
+    sql = text("""  INSERT INTO comments (videoid, userid, content, submisiontime)
                     VALUES (:videoid, :content, :time) """)
-    db.session.execute(sql, {"videoid":video_id, "content":content, "time":time})
+    db.session.execute(sql, {"videoid":video_id, "userid":userid, "content":content, "time":time})
     db.session.commit()
 
-def insert_message(content, time):
-    sql = text("""  INSERT INTO messages (content, submissiontime)
-                    VALUES (:content, :time) """)
-    db.session.execute(sql, {"content":content, "time":time})
+def insert_message(userid, content, time):
+    sql = text("""  INSERT INTO messages (userid, content, submissiontime)
+                    VALUES (:userid, :content, :time) """)
+    db.session.execute(sql, {"userid":userid, "content":content, "time":time})
     db.session.commit()
     
