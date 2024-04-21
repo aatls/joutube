@@ -18,6 +18,7 @@
         </div>
         <a href="/create">Create video</a>
         {% if session.username %}
+        <a href="/logout">Log out</a>
         <p>Logged in as {{ session.username }}</p>
         {% else %}
         <a href="/login">Log in</a>
