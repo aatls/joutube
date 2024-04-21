@@ -6,50 +6,59 @@
 </head>
 
 <body>
-    {% if not confirmed %}
-    <div class="creation-container">
-        <h1>Fill the forms to create a new video</h1>
-        <p>Select 2 Youtube videos of your choice to create a nice mix</p>
-        <p>Paste Youtube links below</p>
-        <div class="warning">
-            <p>{{ message }}</p>
-        </div>
-        <form action="/create" method="POST">
-            <p>Visual</p>
-            <input type="text" name="visual" placeholder="link to visuals..." value="{{ visual }}">
-            <p>Audio</p>
-            <input type="text" name="audio" placeholder="link to audio..." value="{{ audio }}">
-            <p>Title</p>
-            <input type="text" name="title" placeholder="your title..." value="{{ title }}">
-            <p>Description</p>
-            <input type="text" name="desc" placeholder="your description..." value="{{ desc }}">
-            <input type="submit" name="button" value="check">
-        </form>
-    </div>
+    {% if not session.username %}
+        <p>Log in to create a new video</p>
     {% else %}
-    <h1>Please confirm your input</h1>
-    <form action="/create" method="POST">
-        <p>Visual</p>
-        <input type="text" name="visual" value="{{ visual }}" readonly>
-        <iframe width="420" height="315"
-        src="https://www.youtube.com/embed/{{ visual_address }}?autoplay=1&mute=1&loop=1&rel=0"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        <p>Audio</p>
-        <input type="text" name="audio" value="{{ audio }}" readonly>
-        <iframe width="420" height="315"
-        src="https://www.youtube.com/embed/{{ audio_address }}?autoplay=1&loop=1&rel=0"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        <p>Title</p>
-        <input type="text" name="title" value="{{ title }}" readonly>
-        <p>Description</p>
-        <input type="text" name="desc" value="{{ desc }}" readonly>
-        <input type="submit" name="button" value="edit">
-        <input type="submit" name="button" value="create">
-    </form>
-    {% endif %}
-</body>
-</html>
+        <div class="creation-container">
+        <h1>Fill out the form to create a new video</h1>
+        <p>Select 2 YouTube videos of your choice to create a nice mix</p>
+        <p>Visuals will be sourced from the "Visual" source</p>
+        <p>Audio will be sourced from the "Audio" source</p>
+        <p>Paste the links to your source videos below</p>
+        <p>Currently, source looping does not work, so both sources will be played only once</p>
+        {% if not confirmed %}
+            <div class="warning">
+                <p>{{ message }}</p>
+            </div>
+            <form action="/create" method="POST">
+                <p>Visual</p>
+                <input type="text" name="visual" placeholder="link to visuals..." value="{{ visual }}">
+                <p>Audio</p>
+                <input type="text" name="audio" placeholder="link to audio..." value="{{ audio }}">
+                <p>Title</p>
+                <input type="text" name="title" placeholder="your title..." value="{{ title }}">
+                <p>Description</p>
+                <input type="text" name="desc" placeholder="your description..." value="{{ desc }}">
+                <input type="submit" name="button" value="check">
+            </form>
+            {% else %}
+            <h2>Please check that the source videos work as expected</h1>
+                <p>Some YouTube videos cannot be embedded</p>
+                <p>Change your source videos if they do not work as expected</p>
+                <form action="/create" method="POST">
+                    <p>Visual</p>
+                    <input type="text" name="visual" value="{{ visual }}" readonly>
+                    <iframe width="420" height="315"
+                    src="https://www.youtube.com/embed/{{ visual_address }}?autoplay=1&mute=1&loop=1&rel=0"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    <p>Audio</p>
+                    <input type="text" name="audio" value="{{ audio }}" readonly>
+                    <iframe width="420" height="315"
+                    src="https://www.youtube.com/embed/{{ audio_address }}?autoplay=1&loop=1&rel=0"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    <p>Title</p>
+                    <input type="text" name="title" value="{{ title }}" readonly>
+                    <p>Description</p>
+                    <input type="text" name="desc" value="{{ desc }}" readonly>
+                    <input type="submit" name="button" value="edit">
+                    <input type="submit" name="button" value="create">
+                </form>
+                {% endif %}
+            {% endif %}
+        </div>
+        </body>
+        </html>
