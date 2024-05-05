@@ -86,15 +86,17 @@ def logout():
 def video(video_id):
     if not db.video_exists(video_id): return "This video does not exist :/"
 
-    video = db.select_video(video_id)
-    comments = db.select_comments_new(video_id, 100)
-
     if "viewed_videos" not in session.keys():
         session["viewed_videos"] = []
 
     if video_id not in session["viewed_videos"]:
-        session["viewed_videos"].append(video_id)
+        viewed = session["viewed_videos"]
+        viewed.append(video_id)
+        session["viewed_videos"] = viewed
         db.increment_viewcount(video_id)
+
+    video = db.select_video(video_id)
+    comments = db.select_comments_new(video_id, 100)
 
     logged_in = "username" in session.keys()
 
