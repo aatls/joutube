@@ -8,6 +8,8 @@ import db, helpers
 def index():
     if request.method == "POST":
         search_term = request.form["search"]
+        if len(search_term) == 0:
+            return redirect("/")
         thumbnails = helpers.search_by_title(search_term)
     else:
         thumbnails = db.select_thumbnails_new(100)
