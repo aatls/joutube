@@ -28,17 +28,17 @@ def signup():
     message = ""
     accept_input = True
 
+    if db.select_userid(username):
+        message += "Username is already taken\n"
+        accept_input = False
+    if len(username) < 3:
+        message += "Select username that is at least 3 characters\n"
+        accept_input = False
     if len(password1) < 5 or len(password2) < 5:
         message += "Password must be at least 5 characters long\n"
         accept_input = False
     if password1 != password2:
         message += "Passwords do not match\n"
-        accept_input = False
-    if len(username) < 3:
-        message += "Select username that is at least 3 characters\n"
-        accept_input = False
-    if db.username_exists(username):
-        message += "Username is already taken\n"
         accept_input = False
 
     if accept_input:
