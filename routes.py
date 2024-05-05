@@ -79,6 +79,7 @@ def login():
 @app.route("/logout")
 def logout():
     del session["username"]
+    del session["userid"]
     return redirect("/")
 
 @app.route("/video/<int:video_id>")
@@ -88,14 +89,25 @@ def video(video_id):
     video = db.select_video(video_id)
     comments = db.select_comments_new(video_id, 100)
 
-    if "viewed_videos" not in session:
+    if "viewed_videos" not in session.keys():
         session["viewed_videos"] = []
 
     if video_id not in session["viewed_videos"]:
         session["viewed_videos"].append(video_id)
         db.increment_viewcount(video_id)
 
-    return render_template("video.html", video=video, comments=comments)
+    logged_in = "username" in session.keys()
+
+    return render_template("video.html", video=video, comments=comments, logged_in=logged_in)
+
+@app.route("/video/<int:video_id>", methods=["POST"])
+def submit_comment(video_id):
+    comment = request.form["comment"]
+
+    if len(comment) != 0:
+        db.insert_comment(video_id, session["userid"], comment, "NOW()")
+
+    return redirect("/video/" + str(video_id))
 
 @app.route("/create")
 def create():

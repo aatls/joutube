@@ -38,7 +38,7 @@ def select_thumbnails_new(n):
     return result.fetchall()
 
 def select_video(id):
-    sql = text("SELECT * FROM videos v, users u WHERE v.id=:id AND v.userid=u.id")
+    sql = text("SELECT v.*, u.username FROM videos v, users u WHERE v.id=:id AND v.userid=u.id")
     result = db.session.execute(sql, {"id":id})
     return result.fetchone()
 
@@ -52,7 +52,7 @@ def select_videos_by_keywords(keywords):
     return result.fetchall()
 
 def select_comments_new(video_id, n):
-    sql = text("SELECT * FROM comments WHERE videoid=:videoid ORDER BY submissiontime LIMIT :n")
+    sql = text("SELECT c.*, u.username FROM comments c, users u WHERE c.videoid=:videoid AND c.userid=u.id ORDER BY c.submissiontime DESC LIMIT :n")
     result = db.session.execute(sql, {"videoid":video_id, "n":n})
     return result.fetchall()
 
@@ -85,8 +85,8 @@ def insert_user(username, password):
     db.session.commit()
 
 def insert_comment(video_id, userid, content, time):
-    sql = text("""  INSERT INTO comments (videoid, userid, content, submisiontime)
-                    VALUES (:videoid, :content, :time) """)
+    sql = text("""  INSERT INTO comments (videoid, userid, content, submissiontime)
+                    VALUES (:videoid, :userid, :content, :time) """)
     db.session.execute(sql, {"videoid":video_id, "userid":userid, "content":content, "time":time})
     db.session.commit()
 
