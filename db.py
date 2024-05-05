@@ -33,7 +33,7 @@ def check_and_select_by_source(audio, video):
         return "-1"
 
 def select_thumbnails_new(n):
-    sql = text("SELECT * FROM videos ORDER BY submissiontime LIMIT :n")
+    sql = text("SELECT * FROM videos ORDER BY submissiontime DESC LIMIT :n")
     result = db.session.execute(sql, {"n":n})
     return result.fetchall()
 
